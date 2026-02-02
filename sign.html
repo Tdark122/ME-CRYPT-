@@ -1,35 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="module">
-  // Import Firebase core
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-
-  // Import Firebase services
-  import { getAuth } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-  import { getStorage } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-storage.js";
-
-  // 🔹 Your exact Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyBd8-MJVDKR_YQkIGr417T2-CqNaWcPmYQ",
-    authDomain: "me-mu-21b59.firebaseapp.com",
-    projectId: "me-mu-21b59",
-    storageBucket: "me-mu-21b59.firebasestorage.app",
-    messagingSenderId: "1013094363217",
-    appId: "1:1013094363217:web:7d89accf2d275617c44870"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-
-  // Initialize services
-  const auth = getAuth(app);       // For login/signup
-  const db = getFirestore(app);    // For Firestore database
-  const storage = getStorage(app); // For file storage
-
-  // 🔹 Now you can use auth, db, and storage directly in this page
-</script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - ME CRYPT</title>
@@ -177,8 +149,36 @@
     </div>
 
     <!-- FIREBASE: Paste your config below -->
-    <script>
-        // Show error
+    <script type="module">
+        // Show error  <script type="module">
+  // Import Firebase core
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+
+  // Import Firebase services
+  import { getAuth } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+  import { getStorage } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-storage.js";
+
+  // 🔹 Your exact Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyBd8-MJVDKR_YQkIGr417T2-CqNaWcPmYQ",
+    authDomain: "me-mu-21b59.firebaseapp.com",
+    projectId: "me-mu-21b59",
+    storageBucket: "me-mu-21b59.firebasestorage.app",
+    messagingSenderId: "1013094363217",
+    appId: "1:1013094363217:web:7d89accf2d275617c44870"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+  // Initialize services
+  const auth = getAuth(app);       // For login/signup
+  const db = getFirestore(app);    // For Firestore database
+  const storage = getStorage(app); // For file storage
+
+  // 🔹 Now you can use auth, db, and storage directly in this page
+
         function showError(msg) {
             const errorDiv = document.getElementById('error');
             errorDiv.textContent = msg;
