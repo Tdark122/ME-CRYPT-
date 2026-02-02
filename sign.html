@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="module">
+  // Import Firebase core
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+
+  // Import Firebase services
+  import { getAuth } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+  import { getStorage } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-storage.js";
+
+  // 🔹 Your exact Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyBd8-MJVDKR_YQkIGr417T2-CqNaWcPmYQ",
+    authDomain: "me-mu-21b59.firebaseapp.com",
+    projectId: "me-mu-21b59",
+    storageBucket: "me-mu-21b59.firebasestorage.app",
+    messagingSenderId: "1013094363217",
+    appId: "1:1013094363217:web:7d89accf2d275617c44870"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+  // Initialize services
+  const auth = getAuth(app);       // For login/signup
+  const db = getFirestore(app);    // For Firestore database
+  const storage = getStorage(app); // For file storage
+
+  // 🔹 Now you can use auth, db, and storage directly in this page
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ME CRYPT</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #050816, #0a0e27);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .signup-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 450px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d9ff, #7000ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: center;
+            color: #a0aec0;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 217, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #00d9ff;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00d9ff, #7000ff);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .error {
+            background: rgba(255, 68, 102, 0.1);
+            border: 1px solid #ff4466;
+            color: #ff4466;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error.show { display: block; }
+
+        .link {
+            text-align: center;
+            margin-top: 20px;
+            color: #a0aec0;
+        }
+
+        .link a {
+            color: #00d9ff;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .signup-box { padding: 30px 20px; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-box">
+        <h1>ME CRYPT</h1>
+        <p>Create your account</p>
+
+        <div class="error" id="error"></div>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Min 6 characters" required>
+            </div>
+
+            <button type="submit" class="btn" id="btn">Create Account</button>
+        </form>
+
+        <div class="link">
+            Already have an account? <a href="crypt.html">Login</a>
+        </div>
+    </div>
+
+    <!-- FIREBASE: Paste your config below -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // 🔥 REPLACE WITH YOUR CONFIG
+        const firebaseConfig = {
+            apiKey: "YOUR-API-KEY",
+            authDomain: "your-app.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-app.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Show error
+        function showError(msg) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = msg;
+            errorDiv.classList.add('show');
+            setTimeout(() => errorDiv.classList.remove('show'), 5000);
+        }
+
+        // Signup handler
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('btn');
+
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Creating...';
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: name });
+                
+                alert('Account created! Redirecting...');
+                window.location.href = 'invest.html';
+
+            } catch (error) {
+                let msg = 'Signup failed';
+                if (error.code === 'auth/email-already-in-use') msg = 'Email already in use';
+                if (error.code === 'auth/weak-password') msg = 'Password too weak';
+                if (error.code === 'auth/invalid-email') msg = 'Invalid email';
+                
+                showError(msg);
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
+        });
+    </script>
+</body>
+</html>
