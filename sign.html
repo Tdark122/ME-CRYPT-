@@ -1,10 +1,68 @@
-<!DOCTYPE html>
+            <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - ME CRYPT</title>
+    
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBd8-MJVDKR_YQkIGr417T2-CqNaWcPmYQ",
+            authDomain: "me-mu-21b59.firebaseapp.com",
+            projectId: "me-mu-21b59",
+            storageBucket: "me-mu-21b59.firebasestorage.app",
+            messagingSenderId: "1013094363217",
+            appId: "1:1013094363217:web:7d89accf2d275617c44870"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.signupUser = async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('btn');
+            const errorDiv = document.getElementById('error');
+
+            if (password.length < 6) {
+                errorDiv.textContent = 'Password must be at least 6 characters';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Creating Account...';
+            errorDiv.style.display = 'none';
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: name });
+                
+                alert('✅ Account created successfully!');
+                window.location.href = 'dashboard_simple.html';
+
+            } catch (error) {
+                let msg = 'Signup failed';
+                
+                if (error.code === 'auth/email-already-in-use') msg = '❌ Email already in use';
+                if (error.code === 'auth/weak-password') msg = '❌ Password too weak';
+                if (error.code === 'auth/invalid-email') msg = '❌ Invalid email';
+                if (error.code === 'auth/operation-not-allowed') msg = '❌ Email/Password not enabled in Firebase Console';
+                
+                errorDiv.textContent = msg;
+                errorDiv.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
+        }
+    </script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -98,8 +156,6 @@
             display: none;
         }
 
-        .error.show { display: block; }
-
         .link {
             text-align: center;
             margin-top: 20px;
@@ -124,7 +180,7 @@
 
         <div class="error" id="error"></div>
 
-        <form id="signupForm">
+        <form onsubmit="signupUser(event)">
             <div class="form-group">
                 <label>Full Name</label>
                 <input type="text" id="name" placeholder="John Doe" required>
@@ -144,83 +200,8 @@
         </form>
 
         <div class="link">
-            Already have an account? <a href="crypt.html">Login</a>
+            Already have an account? <a href="login_ready.html">Login</a>
         </div>
     </div>
-
-    <!-- FIREBASE: Paste your config below -->
-    <script type="module">
-        // Show error  <script type="module">
-  // Import Firebase core
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-
-  // Import Firebase services
-  import { getAuth } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-  import { getStorage } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-storage.js";
-
-  // 🔹 Your exact Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyBd8-MJVDKR_YQkIGr417T2-CqNaWcPmYQ",
-    authDomain: "me-mu-21b59.firebaseapp.com",
-    projectId: "me-mu-21b59",
-    storageBucket: "me-mu-21b59.firebasestorage.app",
-    messagingSenderId: "1013094363217",
-    appId: "1:1013094363217:web:7d89accf2d275617c44870"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-
-  // Initialize services
-  const auth = getAuth(app);       // For login/signup
-  const db = getFirestore(app);    // For Firestore database
-  const storage = getStorage(app); // For file storage
-
-  // 🔹 Now you can use auth, db, and storage directly in this page
-
-        function showError(msg) {
-            const errorDiv = document.getElementById('error');
-            errorDiv.textContent = msg;
-            errorDiv.classList.add('show');
-            setTimeout(() => errorDiv.classList.remove('show'), 5000);
-        }
-
-        // Signup handler
-        document.getElementById('signupForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const btn = document.getElementById('btn');
-
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.textContent = 'Creating...';
-
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, { displayName: name });
-                
-                alert('Account created! Redirecting...');
-                window.location.href = 'invest.html';
-
-            } catch (error) {
-                let msg = 'Signup failed';
-                if (error.code === 'auth/email-already-in-use') msg = 'Email already in use';
-                if (error.code === 'auth/weak-password') msg = 'Password too weak';
-                if (error.code === 'auth/invalid-email') msg = 'Invalid email';
-                
-                showError(msg);
-                btn.disabled = false;
-                btn.textContent = 'Create Account';
-            }
-        });
-    </script>
 </body>
-</html>
+    </html>
